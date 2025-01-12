@@ -1,37 +1,134 @@
 ### startsWith, endsWith
+```js
+let str = "Hello, world!";
+
+console.log(str.startsWith("Hello"));  // true
+console.log(str.startsWith("world"));  // false
+console.log(str.startsWith("lo", 3));  // true
 ```
-string.startsWith(searchString, position)
+
+```js
+let str = "Hello, world!";
+
+console.log(str.endsWith("world!"));  // true
+console.log(str.endsWith("Hello"));   // false
+console.log(str.endsWith("world", 12)); // true
 ```
-- searchString: 검사할 문자열입니다. 이 문자열이 string의 시작 부분에 있는지 확인합니다.
-- position (선택적): 검색을 시작할 위치를 지정합니다. 기본값은 0이며, 이를 통해 문자열의 특정 위치부터 검사를 시작할 수 있습니다.
-```
-string.endsWith(searchString, length)
-```
-- searchString: 검사할 문자열입니다. 이 문자열이 string의 끝 부분에 있는지 확인합니다.
-- length (선택적): 검사할 문자열의 길이를 지정할 수 있습니다. 기본값은 문자열의 전체 길이입니다. 이 매개변수는 검사할 문자열의 끝에서 검사 범위를 제한할 때 사용됩니다.
 
 ### repeat
+```js
+let str = "abc";
+
+// 문자열을 3번 반복
+console.log(str.repeat(3));  // "abcabcabc"
+
+// 문자열을 0번 반복 (빈 문자열 반환)
+console.log(str.repeat(0));  // ""
+
+// 문자열을 5번 반복
+console.log(str.repeat(5));  // "abcabcabcabcabc"
+
+// 문자열을 1번 반복 (원래 문자열 그대로)
+console.log(str.repeat(1));  // "abc"
+
+// 문자열을 음수로 반복하려고 할 때 (오류 발생)
+try {
+  console.log(str.repeat(-1));  // Error
+} catch (e) {
+  console.log(e.message);  // "repeat count must be non-negative"
+}
 ```
-string.repeat(count)
-```
-- count: 반복할 횟수를 지정하는 정수입니다. 이 값은 0 이상의 정수여야 합니다.
-- 만약 count가 0이면 빈 문자열이 반환됩니다.
-- 만약 count가 음수이거나 정수가 아닌 값일 경우 RangeError가 발생합니다.
 
 ### findIndex, findLastIndex
+```js
+let arr = [5, 12, 8, 130, 44];
+
+// 배열에서 10보다 큰 첫 번째 요소의 인덱스를 찾기
+let index = arr.findIndex(num => num > 10);
+console.log(index);  // 1 (12가 10보다 크므로 첫 번째로 반환됨)
+
+// 조건을 만족하는 요소가 없을 경우 -1 반환
+let noIndex = arr.findIndex(num => num > 200);
+console.log(noIndex);  // -1 (조건을 만족하는 요소가 없음)
 ```
-array.findIndex(callback(element, index, array), thisArg)
+
+```js
+let arr = [5, 12, 8, 130, 44];
+
+// 배열에서 10보다 큰 마지막 요소의 인덱스를 찾기
+let lastIndex = arr.findLastIndex(num => num > 10);
+console.log(lastIndex);  // 4 (44가 마지막으로 10보다 큼)
+
+// 조건을 만족하는 요소가 없을 경우 -1 반환
+let lastNoIndex = arr.findLastIndex(num => num > 200);
+console.log(lastNoIndex);  // -1 (조건을 만족하는 요소가 없음)
 ```
-- callback: 배열의 각 요소에 대해 실행할 함수입니다.
-  - element: 현재 처리되는 배열 요소입니다.
-  - index: 현재 처리되는 요소의 인덱스입니다.
-  - array: findIndex가 호출된 배열입니다.
-- thisArg (선택적): callback 함수 내에서 사용할 this 값입니다.
+
+### padStart, padEnd
+```js
+let str = "42";
+
+// 길이를 5로 맞추기 위해 '0'을 시작에 추가
+console.log(str.padStart(5, '0'));  // "00042"
+
+// 공백이 기본값이므로 '0'을 사용하지 않고 길이를 6으로 맞추기
+console.log(str.padStart(6));  // "  42"
+
+// 'abc'로 채우기
+console.log(str.padStart(7, 'abc'));  // "abcabc42"
 ```
-array.findLastIndex(callback(element, index, array), thisArg)
+
+```js
+let str = "42";
+
+// 길이를 5로 맞추기 위해 '0'을 끝에 추가
+console.log(str.padEnd(5, '0'));  // "42000"
+
+// 공백이 기본값이므로 '0'을 사용하지 않고 길이를 6으로 맞추기
+console.log(str.padEnd(6));  // "42    "
+
+// 'abc'로 채우기
+console.log(str.padEnd(7, 'abc'));  // "42abcab"
 ```
-- callback: findLastIndex() 메서드에서 각 요소에 대해 실행할 함수입니다.
-  - element: 현재 처리되는 배열 요소입니다.
-  - index: 현재 처리되는 요소의 인덱스입니다.
-  - array: findLastIndex가 호출된 배열입니다.
-- thisArg (선택적): callback 함수 내에서 사용할 this 값입니다.
+
+### splice, slice
+```js
+let arr = [1, 2, 3, 4, 5];
+
+// 2번째 인덱스부터 2개 요소 삭제
+let removed = arr.splice(2, 2);
+console.log(arr);      // [1, 2, 5]
+console.log(removed);  // [3, 4]
+
+// 1번째 인덱스에 새로운 요소 삽입
+arr.splice(1, 0, 'a', 'b');
+console.log(arr);      // [1, 'a', 'b', 2, 5]
+```
+
+```js
+let arr = [1, 2, 3, 4, 5];
+
+// 1번째 인덱스부터 3번째 인덱스까지 (3번째 인덱스는 제외)
+let newArr = arr.slice(1, 3);
+console.log(arr);      // [1, 2, 3, 4, 5] (원본 배열은 변경되지 않음)
+console.log(newArr);   // [2, 3]
+```
+
+### some, every, find
+```js
+let arr = [1, 2, 3, 4];
+let hasEven = arr.some(num => num % 2 === 0);  // true
+console.log(hasEven);
+```
+
+```js
+let arr = [2, 4, 6, 8];
+let allEven = arr.every(num => num % 2 === 0);  // true
+console.log(allEven);
+```
+
+```js
+let arr = [5, 12, 8, 130, 44];
+let found = arr.find(num => num > 10);  // 12
+console.log(found);
+```
