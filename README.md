@@ -132,3 +132,18 @@ let arr = [5, 12, 8, 130, 44];
 let found = arr.find(num => num > 10);  // 12
 console.log(found);
 ```
+
+### flat
+```js
+const arr = [1, 2, [3, 4], 5];
+const flattened = arr.flat();
+console.log(flattened); // [1, 2, 3, 4, 5]
+
+const arr = [1, 2, [3, [4, 5]]];
+const flattened = arr.flat(2); // depth 2로 평탄화
+console.log(flattened); // [1, 2, 3, 4, 5]
+
+const arr = [1, [2, [3, [4, [5]]]]];
+const flattened = arr.flat(Infinity);
+console.log(flattened); // [1, 2, 3, 4, 5]
+```
