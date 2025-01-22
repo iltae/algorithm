@@ -147,3 +147,19 @@ const arr = [1, [2, [3, [4, [5]]]]];
 const flattened = arr.flat(Infinity);
 console.log(flattened); // [1, 2, 3, 4, 5]
 ```
+
+### charCodeAt, fromCharCode
+
+```js
+// 'A'를 'a'로 변환 (대문자에서 소문자)
+let char = 'A';
+let charCode = char.charCodeAt(0); // ASCII 코드 값 (65)
+let newChar = String.fromCharCode(charCode + 32); // 97은 'a'의 코드
+console.log(newChar); // 출력: 'a'
+
+// 'a'를 'A'로 변환 (소문자에서 대문자)
+let char2 = 'a';
+let charCode2 = char2.charCodeAt(0); // ASCII 코드 값 (97)
+let newChar2 = String.fromCharCode(charCode2 - 32); // 65는 'A'의 코드
+console.log(newChar2); // 출력: 'A'
+```
