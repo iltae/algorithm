@@ -163,3 +163,24 @@ let charCode2 = char2.charCodeAt(0); // ASCII 코드 값 (97)
 let newChar2 = String.fromCharCode(charCode2 - 32); // 65는 'A'의 코드
 console.log(newChar2); // 출력: 'A'
 ```
+
+### toFixed, Math.round
+
+```js
+let num = 3.14159;
+// 소수점 2자리까지 반올림
+let roundedNum = num.toFixed(2);  // "3.14" (문자열 반환)
+console.log(roundedNum);  // "3.14"
+
+let num2 = 3.1;
+console.log(num2.toFixed(2)); // "3.10"
+```
+
+```js
+let num = 3.14159;
+let roundedNum = Math.round(num * 100) / 100;  // 3.14
+console.log(roundedNum);
+
+let num2 = 3.1;
+console.log(Math.round(num2 * 100) / 100); // 3.1
+```
