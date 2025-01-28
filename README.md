@@ -184,3 +184,16 @@ console.log(roundedNum);
 let num2 = 3.1;
 console.log(Math.round(num2 * 100) / 100); // 3.1
 ```
+
+### localeCompare
+
+```js
+const result = "apple".localeCompare("banana");
+console.log(result); // -1 (apple이 banana보다 앞에 있음)
+
+const result2 = "cherry".localeCompare("banana");
+console.log(result2); // 1 (cherry가 banana보다 뒤에 있음)
+
+const result3 = "apple".localeCompare("apple");
+console.log(result3); // 0 (두 문자열이 동일)
+```
