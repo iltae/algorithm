@@ -16,10 +16,7 @@ function solution(m, musicinfos) {
 
     if (result.length > 0) {
         result.sort((a, b) => {
-            if (b.playTime === a.playTime) {
-                return a.index - b.index;
-            }
-            return b.playTime - a.playTime;
+            return b.playTime - a.playTime || a.index - b.index;
         });
         return result[0].title;
     }
