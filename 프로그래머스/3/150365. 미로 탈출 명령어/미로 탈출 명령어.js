@@ -6,15 +6,17 @@ function solution(n, m, x, y, r, c, k) {
 
     function dfs(row, col, move, commands) {
         const key = `${row},${col},${move}`;
-        if (memo.has(key)) return memo.get(key);
-
+        
         if (move === k) {
             if (row === r - 1 && col === c - 1) {
                 answer.push(commands);
             }
-            memo.set(key, answer);
             return;
         }
+
+        if (memo.has(key)) return;
+        
+        memo.set(key, true);
 
         for (let [command, dx, dy] of direction) {
             const newX = row + dx, newY = col + dy;
@@ -23,11 +25,11 @@ function solution(n, m, x, y, r, c, k) {
                 dfs(newX, newY, move + 1, commands + command);
             }
         }
-
-        memo.set(key, answer);
     }
     
     dfs(x - 1, y - 1, 0, "");
+    
+    console.log(answer)
 
     return answer.length ? answer[0] : "impossible";
 }
