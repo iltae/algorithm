@@ -6,8 +6,7 @@ function solution(info, n, m) {
         
         if (idx === info.length) return A;
 
-        // 메모이제이션
-        if (memo[`${idx}-${A}-${B}`] !== undefined) {
+        if (memo[`${idx}-${A}-${B}`]) {
             return memo[`${idx}-${A}-${B}`];
         }
 
