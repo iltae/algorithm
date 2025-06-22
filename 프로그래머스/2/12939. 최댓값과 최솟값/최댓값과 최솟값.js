@@ -1,4 +1,5 @@
 function solution(s) {
-    const answer =  s.split(" ").sort((a, b) => a - b);
-    return answer[0] + " " + answer[answer.length - 1];
+    const arr = s.split(" ");
+    arr.sort((a, b) => Number(a) - Number(b));
+    return arr[0] + " " + arr[arr.length - 1];
 }
