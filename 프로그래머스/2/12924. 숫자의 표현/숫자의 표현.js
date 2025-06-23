@@ -1,15 +1,11 @@
 function solution(n) {
     let answer = 0;
-    for (let i = 1; i <= n; i++) {
-        let sum = 0;
-        for (let j = i; sum < n; j++) {
-            sum += j;
-            if (sum === n) {
-                answer += 1;
-                break;
-            }
+
+    for (let k = 1; k * (k - 1) / 2 < n; k++) {
+        if ((n - (k * (k - 1)) / 2) % k === 0) {
+            answer++;
         }
     }
-    
+
     return answer;
 }
