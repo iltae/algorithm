@@ -1,12 +1,12 @@
 function solution(n) {
-    const nCount = count(n);
-    let answer = n + 1;
-    while(count(answer) !== nCount) {
-        answer++;
+    let countOne = n.toString(2).split('1').length - 1;
+    
+    while (true) {
+        n++;
+        let nextCountOne = n.toString(2).split('1').length - 1;
+        
+        if (countOne === nextCountOne) {
+            return n;
+        }
     }
-    return answer;
-}
-
-function count(n) {
-    return n.toString(2).split("").filter(el => el === "1").length
 }
