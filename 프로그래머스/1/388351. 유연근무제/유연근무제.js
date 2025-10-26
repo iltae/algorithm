@@ -1,34 +1,28 @@
-function format(number) {
-    let hour = Math.floor(number / 100);
-    let minute = number % 100;
-    
-    minute += 10;
-    
-    if (minute >= 60) {
-        hour += 1;
-        minute -= 60;
-    }
-    
-    return hour * 100 + minute;
-}
-
 function solution(schedules, timelogs, startday) {
-    let answer = 0;
+    var answer = 0;
     
-    schedules.forEach((schedule, personIdx) => {
-        const limit = format(schedule);
+    schedules.forEach((schedule, idx) => {
+        const timelog = timelogs[idx];
         
-        for (let i = 0; i < timelogs[personIdx].length; i++) {
-            const dayOfWeek = (i + startday - 1) % 7 + 1;
-            if (dayOfWeek !== 6 && dayOfWeek !== 7) {
-                if (timelogs[personIdx][i] > limit) {
-                    return;
-                }
+        let isAchieve = true;
+        
+        for (let i = 0; i < timelog.length; i++) {
+            const weekend = (startday + i) % 7;
+            
+            if (weekend === 0 || weekend === 6) continue;
+            
+            if (timeToMin(timelog[i]) - timeToMin(schedule) > 10) {
+                isAchieve = false;
+                break;
             }
         }
         
-        answer++;
-    });
+        if (isAchieve) answer++;
+    })
     
     return answer;
+}
+
+function timeToMin(num) {
+    return Math.floor((num / 100)) * 60 + num % 100;
 }
