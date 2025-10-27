@@ -1,11 +1,10 @@
 function solution(name, yearning, photo) {
-    const scoreMap = {};
+    var answer = [];
+    const Obj = {};
     
-    name.forEach((el, idx) => {
-        scoreMap[el] = yearning[idx];
-    })
-    
-    return photo.map((el) => {
-        return el.reduce((acc, cur) => acc + (scoreMap[cur] || 0), 0);
-    });
+    for (let i = 0; i < name.length; i++) {
+        Obj[name[i]] = yearning[i];
+    }
+
+    return photo.map(names => names.reduce((acc, cur) => Obj[cur] ? acc + Obj[cur] : acc, 0));
 }
