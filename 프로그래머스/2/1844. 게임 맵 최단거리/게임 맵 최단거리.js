@@ -1,28 +1,24 @@
 function solution(maps) {
-
-    const target = [maps.length - 1, maps[0].length - 1];
-    const direction = [[1, 0], [0, 1], [-1, 0], [0, -1]];
-    const visited = Array.from({ length: maps.length }, () => Array(maps[0].length).fill(false));
+    const n = maps.length, m = maps[0].length;
+    const directions = [[1, 0], [0, 1], [-1, 0], [0, -1]];
     
-    visited[0][0] = true;
+    const queue = [];
+    queue.push([0, 0, 1]);
+    maps[0][0] = 0;
     
-    const queue = [[0, 0, 1]];
+    let idx = 0;
     
-    while(queue.length > 0) {
-        const [row, col, steps] = queue.shift();
+    while (idx < queue.length) {
+        const [x, y, dist] = queue[idx++];
         
-        if(row === target[0] && col === target[1]) {
-            return steps;
-        }
+        if (x === m - 1 && y === n - 1) return dist;
         
-        for (const [dx, dy] of direction) {
-            const newRow = row + dx;
-            const newCol = col + dy;
-
-            if (newRow >= 0 && newRow < maps.length && newCol >= 0 && newCol < maps[0].length &&
-                maps[newRow][newCol] === 1 && !visited[newRow][newCol]) {
-                visited[newRow][newCol] = true;
-                queue.push([newRow, newCol, steps + 1]);
+        for (const [dx, dy] of directions) {
+            const nx = x + dx, ny = y + dy;
+            
+            if (nx >= 0 && ny >= 0 && nx < m && ny < n && maps[ny][nx] === 1) {
+                maps[ny][nx] = 0;
+                queue.push([nx, ny, dist + 1]);
             }
         }
     }
