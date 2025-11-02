@@ -1,20 +1,20 @@
 function solution(players, callings) {
-    const ranking = {};
-
-    players.forEach((player, idx) => {
-        ranking[player] = idx;
+    const indexMap = new Map();
+    
+    players.forEach((player, index) => {
+        indexMap.set(player, index);
     });
 
-    callings.forEach(el => {
-        const currentRank = ranking[el];
-        const prevPlayer = players[currentRank - 1];
-
-        players[currentRank] = prevPlayer;
-        players[currentRank - 1] = el;
-
-        ranking[el] = currentRank - 1;
-        ranking[prevPlayer] = currentRank;
-    });
+    for (const calling of callings) {
+        const playerIdx = indexMap.get(calling);
+        const frontPlayer = players[playerIdx - 1];
+        
+        players[playerIdx] = frontPlayer;
+        players[playerIdx - 1] = calling;
+        
+        indexMap.set(calling, playerIdx - 1);
+        indexMap.set(frontPlayer, playerIdx);
+    }
 
     return players;
 }
