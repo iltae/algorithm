@@ -1,39 +1,36 @@
 function solution(park, routes) {
-    let dog;
-    const direction = {N: [-1, 0], S: [1, 0], W: [0, -1], E: [0, 1]};
-
-    // 시작 위치 찾기
-    for (let i = 0; i < park.length; i++) {
-        for (let j = 0; j < park[i].length; j++) {
+    let position;
+    const directions = {N: [-1, 0], S: [1, 0], W: [0, -1], E: [0, 1]};
+    const R = park.length, C = park[0].length;
+    
+    outer: for (let i = 0; i < R; i++) {
+        for (let j = 0; j < C; j++) {
             if (park[i][j] === "S") {
-                dog = [i, j];
-                break;
+                position = [i, j];
+                break outer;
             }
         }
     }
-
-    // 명령 순회
-    routes.forEach(el => {
-        const [way, count] = el.split(" ");
-        const steps = parseInt(count);
-
-        let canMove = true;
-        let tempDog = [...dog];
+    
+    outer: for (const route of routes) {
+        const [direction, count] = route.split(" ");
+        let [r, c] = position;
         
-        for (let i = 0; i < steps; i++) {
-            tempDog[0] += direction[way][0];
-            tempDog[1] += direction[way][1];
-
-            if (tempDog[0] < 0 || tempDog[0] >= park.length || tempDog[1] < 0 || tempDog[1] >= park[0].length || park[tempDog[0]][tempDog[1]] === "X") {
-                canMove = false;
-                break;
+        for(let i = 1; i <= Number(count); i++) {
+            let nr = r + directions[direction][0];
+            let nc = c + directions[direction][1];
+            
+            if ((nr < 0 || nc < 0 || nr >= R || nc >= C) || park[nr][nc] === 'X') {
+                continue outer;
             }
+            
+            r = nr;
+            c = nc;
         }
-
-        if (canMove) {
-            dog = tempDog;
-        }
-    });
-
-    return dog;
+        
+        position = [r, c];
+        
+    }
+    
+    return position;
 }
