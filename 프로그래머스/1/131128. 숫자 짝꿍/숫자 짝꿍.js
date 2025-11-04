@@ -1,18 +1,35 @@
 function solution(X, Y) {
-    const listX = X.split("").sort((a, b) => b - a);
-    const listY = Y.split("").sort((a, b) => b - a);
     let answer = "";
-    let idxX = 0, idxY = 0;
-    while (idxX < listX.length && idxY < listY.length) {
-        if (listX[idxX] === listY[idxY]) {
-            answer += listX[idxX];
-            idxX++;
-            idxY++;
-        } else if (listX[idxX] > listY[idxY]) {
-            idxX++;
-        } else {
-            idxY++;
+    const countX = Array(10).fill(0);
+    const countY = Array(10).fill(0);
+
+    for (const char of X) {
+        countX[Number(char)]++;
+    }
+
+    for (const char of Y) {
+        countY[Number(char)]++;
+    }
+
+    const builder = [];
+
+    for (let i = 9; i >= 0; i--) {
+        const commonCount = Math.min(countX[i], countY[i]);
+        
+        if (commonCount > 0) {
+             builder.push(String(i).repeat(commonCount));
         }
     }
-    return answer? +answer !== 0 ? answer : "0" : "-1";
+
+    answer = builder.join('');
+
+    if (answer === "") {
+        return "-1";
+    }
+    
+    if (answer[0] === "0") {
+        return "0";
+    }
+
+    return answer;
 }
