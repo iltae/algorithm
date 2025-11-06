@@ -1,18 +1,26 @@
 function solution(sequence, k) {
-    let start = 0, sum = 0, result = [-1, -1], minLength = Infinity;
+    let left = 0;
+    let currentSum = 0;
+    let minLength = Infinity;
+    let answer = [];
 
-    for (let end = 0; end < sequence.length; end++) {
-        sum += sequence[end];
+    for (let right = 0; right < sequence.length; right++) {
+        currentSum += sequence[right];
+        
+        while (currentSum > k && left <= right) {
+            currentSum -= sequence[left];
+            left++;
+        }
+        
+        if (currentSum === k) {
+            const currentLength = right - left + 1;
 
-        while (sum >= k) {
-            if (sum === k && (end - start) < minLength) {
-                minLength = end - start;
-                result = [start, end];
+            if (currentLength < minLength) {
+                minLength = currentLength;
+                answer = [left, right];
             }
-            
-            sum -= sequence[start++];
         }
     }
 
-    return result;
+    return answer;
 }
