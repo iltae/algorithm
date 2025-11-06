@@ -1,44 +1,53 @@
 function solution(maps) {
-    const direction = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-    let start = [], lever = [], exit = [];
+    const R = maps.length;
+    const C = maps[0].length;
+    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
-    for (let i = 0; i < maps.length; i++) {
-        for (let j = 0; j < maps[i].length; j++) {
-            if (maps[i][j] === "S") start = [i, j];
-            if (maps[i][j] === "L") lever = [i, j];
-            if (maps[i][j] === "E") exit = [i, j];
+    let S, L, E;
+
+    for (let r = 0; r < R; r++) {
+        for (let c = 0; c < C; c++) {
+            if (maps[r][c] === 'S') S = [r, c];
+            if (maps[r][c] === 'L') L = [r, c];
+            if (maps[r][c] === 'E') E = [r, c];
         }
     }
-
-    function bfs(start, goal) {
-        const queue = [[start[0], start[1], 0]];
-        const visited = Array.from({ length: maps.length }, () => Array(maps[0].length).fill(false));
+    
+    const bfs = (start, end) => {
+        const visited = Array.from({ length: R }, () => Array(C).fill(false));
+        const queue = [];
+        queue.push([...start, 0]);
         visited[start[0]][start[1]] = true;
 
-        while (queue.length) {
-            const [x, y, dist] = queue.shift();
+        let idx = 0;
 
-            if (x === goal[0] && y === goal[1]) return dist;
+        while (queue[idx]) {
+            const [r, c, cost] = queue[idx++];
 
-            for (let [dx, dy] of direction) {
-                const newX = x + dx;
-                const newY = y + dy;
+            if (r === end[0] && c === end[1]) {
+                return cost;
+            }
 
-  
-                if (newX >= 0 && newX < maps.length && newY >= 0 && newY < maps[0].length && !visited[newX][newY] && maps[newX][newY] !== 'X') {
-                    visited[newX][newY] = true;
-                    queue.push([newX, newY, dist + 1]);
+            for (const [dr, dc] of directions) {
+                const nr = r + dr;
+                const nc = c + dc;
+
+                if (nr >= 0 && nr < R && nc >= 0 && nc < C && !visited[nr][nc] && maps[nr][nc] !== 'X') {
+                    visited[nr][nc] = true;
+                    queue.push([nr, nc, cost + 1]);
                 }
             }
         }
-        return -1; 
+
+        return -1;
+    };
+
+    const timeToLever = bfs(S, L);
+    const timeToExit = bfs(L, E);
+
+    if (timeToLever === -1 || timeToExit === -1) {
+        return -1;
+    } else {
+        return timeToLever + timeToExit;
     }
-
-    const toLever = bfs(start, lever);
-    if (toLever === -1) return -1;
-
-    const toExit = bfs(lever, exit);
-    if (toExit === -1) return -1;
-
-    return toLever + toExit;
 }
