@@ -1,26 +1,41 @@
-function solution(n, wires) {
-    const graph = Array.from(Array(n + 1), () => []);
-    
-    for (const [v1, v2] of wires) {
-        graph[v1].push(v2);
-        graph[v2].push(v1);
-    }
-    
-    function dfs(node, parent) {
-        let size = 1;
+function bfs(start, graph, n) {
+    const visited = new Array(n + 1).fill(false);
+    const queue = [start];
+    visited[start] = true;
+    let idx = 0;
+
+    while (idx < queue.length) {
+        const node = queue[idx++];
+
         for (const neighbor of graph[node]) {
-            if (neighbor !== parent) {
-                size += dfs(neighbor, node);
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                queue.push(neighbor);
             }
         }
-        return size;
     }
-
-    let minDiff = Infinity;
     
-    for (const [v1, v2] of wires) {
-        const size1 = dfs(v1, v2), size2 = n - size1;
-        const diff = Math.abs(size1 - size2);
+    return idx;
+}
+
+function solution(n, wires) {
+    let minDiff = n; 
+
+    for (let i = 0; i < wires.length; i++) {
+        const graph = Array.from({ length: n + 1 }, () => []);
+        
+        for (let j = 0; j < wires.length; j++) {
+            if (i === j) continue; 
+            
+            const [v1, v2] = wires[j];
+            graph[v1].push(v2);
+            graph[v2].push(v1);
+        }
+        
+        const countA = bfs(wires[i][0], graph, n);
+        const countB = n - countA;
+        const diff = Math.abs(countA - countB);
+
         minDiff = Math.min(minDiff, diff);
     }
 
