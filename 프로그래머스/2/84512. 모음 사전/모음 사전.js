@@ -1,3 +1,5 @@
 function solution(word) {
-    return word.split('').reduce((r, c, i) => r + [781, 156, 31, 6, 1][i] * ['A', 'E', 'I', 'O', 'U'].indexOf(c) + 1, 0);
+    const weights = [781, 156, 31, 6, 1]
+    const vowels = ["A", "E", "I", "O", "U"];
+    return word.split("").reduce((acc, cur, idx) => acc + weights[idx] * vowels.indexOf(cur) + 1, 0);
 }
