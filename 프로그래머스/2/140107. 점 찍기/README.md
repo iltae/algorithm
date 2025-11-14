@@ -1,10 +1,10 @@
 # [level 2] 점 찍기 - 140107 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/140107?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/140107) 
 
 ### 성능 요약
 
-메모리: 37.4 MB, 시간: 12.39 ms
+메모리: 37 MB, 시간: 10.39 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 05일 23:04:05
+2025년 11월 15일 00:15:18
 
 ### 문제 설명
 

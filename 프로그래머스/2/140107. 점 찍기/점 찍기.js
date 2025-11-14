@@ -1,9 +1,9 @@
 function solution(k, d) {
     let answer = 0;
-
-    for (let x = 0; x <= d; x += k) {
-        let maxY = Math.floor(Math.sqrt(d * d - x * x));
-        answer += Math.floor(maxY / k) + 1;
+    
+    for (let i = 0; i <= d; i += k) {
+        const limit = Math.floor(Math.sqrt(d ** 2 - i ** 2));
+        answer += Math.floor(limit / k) + 1;
     }
     
     return answer;
