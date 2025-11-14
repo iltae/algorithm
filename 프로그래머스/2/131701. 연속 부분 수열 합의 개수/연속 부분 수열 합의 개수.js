@@ -1,18 +1,16 @@
 function solution(elements) {
-    const answer = new Set();
     const n = elements.length;
-
-    for (let len = 1; len <= n; len++) {
-        for (let i = 0; i < n; i++) {
-            let sum = 0;
-            
-            for (let j = i; j < i + len; j++) {
-                sum += elements[j % n];
-            }
-            
-            answer.add(sum);
+    const doubledElements = [...elements, ...elements];
+    const uniqueSums = new Set();
+    
+    for (let i = 0; i < n; i++) {
+        let currentSum = 0;
+        
+        for (let length = 1; length <= n; length++) {
+            currentSum += doubledElements[i + length - 1];
+            uniqueSums.add(currentSum);
         }
     }
 
-    return answer.size;
+    return uniqueSums.size;
 }
