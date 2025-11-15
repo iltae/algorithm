@@ -1,24 +1,33 @@
 function solution(tickets) {
-    const answer = [], graph = {};
+    let answer = [];
+    const visited = new Array(tickets.length).fill(false);
     
-    for (let [from, to] of tickets) {
-        graph[from] = graph[from] || [];
-        graph[from].push(to);
-    }
+    tickets.sort();
 
-    for (let key in graph) {
-        graph[key].sort();
-    }
+    function dfs(currentAirport, path) {
+        if (answer.length > 0) return;
 
-    function dfs(current) {
-        while (graph[current] && graph[current].length > 0) {
-            const next = graph[current].shift();
-            dfs(next);
+        if (path.length === tickets.length + 1) {
+            answer = [...path];
+            return;
         }
-        answer.push(current);
+        
+        for (let i = 0; i < tickets.length; i++) {
+            if (!visited[i] && tickets[i][0] === currentAirport) {
+                visited[i] = true;
+                path.push(tickets[i][1]);
+                
+                dfs(tickets[i][1], path);
+                
+                if (answer.length === 0) {
+                    visited[i] = false;
+                    path.pop();
+                }
+            }
+        }
     }
-
-    dfs("ICN");
-
-    return answer.reverse();
+    
+    dfs("ICN", ["ICN"]);
+    
+    return answer;
 }
