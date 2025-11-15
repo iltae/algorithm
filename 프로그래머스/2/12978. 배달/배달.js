@@ -1,35 +1,43 @@
 function solution(N, road, K) {
-
+    const dist = Array(N + 1).fill(Infinity);
+    
     const graph = Array.from({ length: N + 1 }, () => []);
     
-    for (const [a, b, c] of road) {
-        graph[a].push([b, c]);
-        graph[b].push([a, c]);
+    for (const [a, b, cost] of road) {
+        graph[a].push([b, cost]);
+        graph[b].push([a, cost]);
     }
     
-    const INF = 500001;
-    const dist = Array(N + 1).fill(INF);
     dist[1] = 0;
     
-    const pq = [];  // 우선순위 큐 (시간, 마을번호)
-    pq.push([0, 1]);
-    
-    while (pq.length > 0) {
-        const [time, node] = pq.shift();
+    const visited = new Array(N + 1).fill(false);
+
+    for (let i = 0; i < N; i++) {
         
-        if (time > dist[node]) continue;
+        let minCost = Infinity;
+        let currentNode = -1;
         
-        for (const [next, travelTime] of graph[node]) {
-            const newTime = time + travelTime;
-            if (newTime < dist[next]) {
-                dist[next] = newTime;
-                pq.push([newTime, next]);
+        for (let j = 1; j <= N; j++) {
+            if (!visited[j] && dist[j] < minCost) {
+                minCost = dist[j];
+                currentNode = j;
+            }
+        }
+
+        if (currentNode === -1) break;
+
+        visited[currentNode] = true;
+        
+        for (const [neighbor, cost] of graph[currentNode]) {
+            const newCost = dist[currentNode] + cost;
+
+            if (newCost < dist[neighbor]) {
+                dist[neighbor] = newCost;
             }
         }
     }
     
     let answer = 0;
-    
     for (let i = 1; i <= N; i++) {
         if (dist[i] <= K) {
             answer++;
