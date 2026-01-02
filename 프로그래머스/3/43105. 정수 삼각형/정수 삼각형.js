@@ -1,9 +1,11 @@
 function solution(triangle) {
-    for (let row = triangle.length - 2; row >= 0; row--) {
-        for (let col = 0; col <= row; col++) {
-            triangle[row][col] += Math.max(triangle[row + 1][col], triangle[row + 1][col + 1]);
+    for (let i = triangle.length - 1; i > 0; i--) {
+        for (let j = 0; j < triangle[i].length - 1; j++) {
+            const left = triangle[i][j] || 0;
+            const right = triangle[i][j + 1] || 0;
+            triangle[i - 1][j] += Math.max(left, right);
         }
     }
-    
+  
     return triangle[0][0];
 }
