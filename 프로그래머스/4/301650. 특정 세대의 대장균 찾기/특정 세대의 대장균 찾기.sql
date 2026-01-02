@@ -1,0 +1,23 @@
+WITH RECURSIVE ID_GEN AS (
+    SELECT
+        ID, 1 AS GEN
+    FROM
+        ECOLI_DATA
+    WHERE
+        PARENT_ID IS NULL
+    UNION ALL
+    SELECT
+        E.ID, ID_GEN.GEN + 1
+    FROM
+        ECOLI_DATA E
+    JOIN
+        ID_GEN ON E.PARENT_ID = ID_GEN.ID
+)
+SELECT
+    ID
+FROM
+    ID_GEN
+WHERE
+    GEN = 3
+ORDER BY
+    ID
