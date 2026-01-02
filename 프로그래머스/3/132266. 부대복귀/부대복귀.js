@@ -1,30 +1,30 @@
 function solution(n, roads, sources, destination) {
-    const memo = Array(n + 1).fill(-1);
-    const graph = Array.from({ length: n + 1 }, () => []);
+    const connection = Array.from({ length: n + 1}, () => [])
     
-    for (let [from, to] of roads) {
-        graph[from].push(to);
-        graph[to].push(from);
-    }
+    roads.forEach(road => {
+        const [v1, v2] = road;
+        connection[v1].push(v2);
+        connection[v2].push(v1);
+    })
     
-    function bfs() {
-        const queue = [destination];
-        memo[destination] = 0;
+    const minDepth = Array(n + 1).fill(-1);
+    
+    const queue = [[destination, 0]];
+    let idx = 0;
+    
+    while(idx < queue.length) {
+        const [area, depth] = queue[idx++];
+
+        if (minDepth[area] === -1) {
+            minDepth[area] = depth
+        }
         
-        while (queue.length) {
-            const node = queue.shift();
-            const currentDistance = memo[node];
-            
-            for (let neighbor of graph[node]) {
-                if (memo[neighbor] === -1) {
-                    memo[neighbor] = currentDistance + 1;
-                    queue.push(neighbor);
-                }
+        for (const next of connection[area]) {
+            if (minDepth[next] === -1) {
+                queue.push([next, depth + 1]);
             }
         }
     }
     
-    bfs();
-    
-    return sources.map(source => memo[source]);
+    return sources.map(source => minDepth[source]);
 }
