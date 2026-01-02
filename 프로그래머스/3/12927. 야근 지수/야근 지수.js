@@ -1,26 +1,31 @@
 function solution(n, works) {
+    if (works.reduce((a, b) => a + b, 0) <= n) return 0;
+
     works.sort((a, b) => b - a);
-    
-    for (let i = 0; i < n; i++) {
-        if (works[0] > 0) {
-            works[0] -= 1;
-        } else {
+
+    while (n > 0) {
+        const maxVal = works[0];
+        let count = 0;
+        
+        for (let i = 0; i < works.length; i++) {
+            if (works[i] === maxVal) count++;
+            else break;
+        }
+
+        if (n < count) {
+            for (let i = 0; i < n; i++) works[i]--;
             break;
         }
+
+        const nextMax = works[count] || 0;
         
-        let j = 0;
-        
-        while (j + 1 < works.length && works[j] < works[j + 1]) {
-            [works[j], works[j + 1]] = [works[j + 1], works[j]];
-            j++;
+        let diff = Math.min(maxVal - nextMax, Math.floor(n / count)) || 1;
+
+        for (let i = 0; i < count; i++) {
+            works[i] -= diff;
+            n -= diff;
         }
     }
-    
-    let totalFatigue = 0;
-    
-    for (let work of works) {
-        totalFatigue += work * work;
-    }
 
-    return totalFatigue;
+    return works.reduce((acc, cur) => acc + (cur > 0 ? cur ** 2 : 0), 0);
 }
