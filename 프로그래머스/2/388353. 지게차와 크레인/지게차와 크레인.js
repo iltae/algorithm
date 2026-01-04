@@ -1,98 +1,72 @@
-function lift(container, storage) {
-    const direction = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-    const n = storage.length, m = storage[0].length;
-    const temp = storage.map(row => row.split(''));
+function cart(grid, target, n, m) {
+    const toRemove = [];
+    const visited = Array.from({ length: n + 2 }, () => Array(m + 2).fill(false));
+    const queue = [[0, 0]];
+    visited[0][0] = true;
 
-    const accessible = new Set();
+    const dr = [-1, 1, 0, 0];
+    const dc = [0, 0, -1, 1];
 
-    function bfs() {
-        const queue = [];
-        const visited = Array.from({ length: n }, () => Array(m).fill(false));
+    let head = 0;
+    while (head < queue.length) {
+        const [r, c] = queue[head++];
 
-        for (let i = 0; i < n; i++) {
-            if (!visited[i][0]) {
-                visited[i][0] = true;
-                queue.push([i, 0]);
-            }
-            if (!visited[i][m - 1]) {
-                visited[i][m - 1] = true;
-                queue.push([i, m - 1]);
-            }
-        }
-        for (let j = 0; j < m; j++) {
-            if (!visited[0][j]) {
-                visited[0][j] = true;
-                queue.push([0, j]);
-            }
-            if (!visited[n - 1][j]) {
-                visited[n - 1][j] = true;
-                queue.push([n - 1, j]);
-            }
-        }
+        for (let i = 0; i < 4; i++) {
+            const nr = r + dr[i];
+            const nc = c + dc[i];
 
-        while (queue.length > 0) {
-            const [x, y] = queue.shift();
-
-            if (temp[x][y] === container) {
-                accessible.add(`${x},${y}`);
-            }
-            
-            if(temp[x][y] == 0) {
-                for (const [dx, dy] of direction) {
-                    const nx = x + dx, ny = y + dy;
-                    if (nx >= 0 && ny >= 0 && nx < n && ny < m && !visited[nx][ny]) {
-                        visited[nx][ny] = true;
-                        queue.push([nx, ny]);
-                    }
+            if (nr >= 0 && nr < n + 2 && nc >= 0 && nc < m + 2 && !visited[nr][nc]) {
+                if (grid[nr][nc] === '.' || grid[nr][nc] === ' ') {
+                    visited[nr][nc] = true;
+                    queue.push([nr, nc]);
+                } else if (grid[nr][nc] === target) {
+                    visited[nr][nc] = true;
+                    toRemove.push([nr, nc]);
                 }
             }
         }
     }
 
-    bfs();
-
-    for (const pos of accessible) {
-        const [i, j] = pos.split(',').map(Number);
-        temp[i][j] = 0
-    }
-
-    return temp.map(row => row.join(''));
+    toRemove.forEach(([r, c]) => grid[r][c] = ' ');
+    
+    return grid;
 }
 
-function crane(container, storage) {
-    const temp = storage.map(row => row.split(''));
-
-    for (let i = 0; i < temp.length; i++) {
-        for (let j = 0; j < temp[0].length; j++) {
-            if (temp[i][j] === container) {
-                temp[i][j] = 0;
+function crane(grid, target, n, m) {
+    for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= m; j++) {
+            if (grid[i][j] === target) {
+                grid[i][j] = ' ';
             }
         }
     }
-
-    return temp.map(row => row.join(''));
+    return grid;
 }
 
 function solution(storage, requests) {
-    let tempStorage = storage;
+    const n = storage.length;
+    const m = storage[0].length;
 
-    for (const request of requests) {
-        const container = request[0];
+    let grid = Array.from({ length: n + 2 }, (_, i) => {
+        if (i === 0 || i === n + 1) return Array(m + 2).fill('.');
+        return ['.', ...storage[i - 1].split(''), '.'];
+    });
+
+    requests.forEach(request => {
         if (request.length === 1) {
-            tempStorage = lift(container, tempStorage);
-        } else {  
-            tempStorage = crane(container, tempStorage);
+            grid = cart(grid, request, n, m);
+        } else {
+            grid = crane(grid, request[0], n, m);
+        }
+    });
+
+    let answer = 0;
+    
+    for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= m; j++) {
+            if (grid[i][j] !== ' ' && grid[i][j] !== '.') answer++;
         }
     }
 
-    let remainingContainers = 0;
-    for (let row of tempStorage) {
-        for (let cell of row) {
-            if (cell !== '0') {
-                remainingContainers++;
-            }
-        }
-    }
-
-    return remainingContainers;
+    return answer;
 }
