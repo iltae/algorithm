@@ -1,33 +1,28 @@
 function solution(weights) {
-  weights.sort((a, b) => b - a);
+    let answer = 0;
+    const store = {};
+    const ratios = [3/2, 4/2, 4/3];
 
-  const dict = {};
-  
-  let cnt = 0;
+    weights.forEach(w => {
+        store[w] = (store[w] || 0) + 1;
+    });
 
-  for (let i = 0; i < weights.length; i++) {
-      const w = weights[i];
+    const uniqueWeights = Object.keys(store).map(Number).sort((a, b) => a - b);
 
-      if (dict[w]) {
-          cnt += dict[w];
-      }
+    uniqueWeights.forEach(w => {
+        const count = store[w];
 
-      if (dict[(w * 4) / 3]) {
-          cnt += dict[(w * 4) / 3];
-      }
+        if (count > 1) {
+            answer += (count * (count - 1)) / 2;
+        }
 
-      if (dict[(w * 3) / 2]) {
-          cnt += dict[(w * 3) / 2];
-      }
+        ratios.forEach(r => {
+            const target = w * r;
+            if (store[target]) {
+                answer += count * store[target];
+            }
+        });
+    });
 
-      if (dict[w * 2]) {
-          cnt += dict[w * 2];
-      }
-
-      dict[w] = (dict[w] || 0) + 1;
-  }
-    
-    console.log(dict);
-
-    return cnt;
+    return answer;
 }
