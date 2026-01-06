@@ -1,16 +1,20 @@
-function hanoi(answer, k, cur, sub, main) {
-    if (k === 1) {
-        answer.push([cur, main]);
-        return;
+function solution(n) {
+    const answer = [];
+
+    function hanoi(count, from, to, mid) {
+        if (count === 1) {
+            answer.push([from, to]);
+            return;
+        }
+
+        hanoi(count - 1, from, mid, to);
+        
+        answer.push([from, to]);
+        
+        hanoi(count - 1, mid, to, from);
     }
 
-    hanoi(answer, k - 1, cur, main, sub);
-    answer.push([cur, main]);
-    hanoi(answer, k - 1, sub, cur, main);
-}
-
-function solution(n) {
-    let answer = [];
-    hanoi(answer, n, 1, 2, 3);
+    hanoi(n, 1, 3, 2);
+    
     return answer;
 }
