@@ -1,29 +1,19 @@
 function solution(info, n, m) {
-    const L = info.length;
-    
     let dp = new Array(m).fill(Infinity);
     dp[0] = 0;
 
     for (const [aTrace, bTrace] of info) {
-        let nextDp = new Array(m).fill(Infinity);
-        
-        for (let bSum = 0; bSum < m; bSum++) {
-            if (dp[bSum] === Infinity) continue;
+        for (let j = m - 1; j >= 0; j--) {
+            if (dp[j] === Infinity) continue;
 
-            // 1. A가 훔치는 경우
-            if (dp[bSum] + aTrace < n) {
-                nextDp[bSum] = Math.min(nextDp[bSum], dp[bSum] + aTrace);
+            if (j + bTrace < m) {
+                dp[j + bTrace] = Math.min(dp[j + bTrace], dp[j]);
             }
-
-            // 2. B가 훔치는 경우
-            if (bSum + bTrace < m) {
-                nextDp[bSum + bTrace] = Math.min(nextDp[bSum + bTrace], dp[bSum]);
-            }
+            dp[j] = dp[j] + aTrace;
         }
-        dp = nextDp;
     }
-
-    let answer = Math.min(...dp);
     
-    return answer === Infinity ? -1 : answer;
+    let filtered = dp.filter(v => v < n);
+    
+    return filtered.length === 0 ? -1 : Math.min(...filtered);
 }
