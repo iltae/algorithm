@@ -1,25 +1,29 @@
 function solution(info, n, m) {
-    let memo = {};
+    const L = info.length;
+    
+    let dp = new Array(m).fill(Infinity);
+    dp[0] = 0;
 
-    function dfs(idx, A, B) {
-        if (A >= n || B >= m) return Infinity;
+    for (const [aTrace, bTrace] of info) {
+        let nextDp = new Array(m).fill(Infinity);
         
-        if (idx === info.length) return A;
+        for (let bSum = 0; bSum < m; bSum++) {
+            if (dp[bSum] === Infinity) continue;
 
-        if (memo[`${idx}-${A}-${B}`]) {
-            return memo[`${idx}-${A}-${B}`];
+            // 1. A가 훔치는 경우
+            if (dp[bSum] + aTrace < n) {
+                nextDp[bSum] = Math.min(nextDp[bSum], dp[bSum] + aTrace);
+            }
+
+            // 2. B가 훔치는 경우
+            if (bSum + bTrace < m) {
+                nextDp[bSum + bTrace] = Math.min(nextDp[bSum + bTrace], dp[bSum]);
+            }
         }
-
-        let resultA = dfs(idx + 1, A + info[idx][0], B);
-        let resultB = dfs(idx + 1, A, B + info[idx][1]);
-        let result = Math.min(resultA, resultB);
-
-        memo[`${idx}-${A}-${B}`] = result;
-
-        return result;
+        dp = nextDp;
     }
 
-    let answer = dfs(0, 0, 0);
-
+    let answer = Math.min(...dp);
+    
     return answer === Infinity ? -1 : answer;
 }
